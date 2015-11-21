@@ -21,16 +21,23 @@ set -o nounset                              # Treat unset variables as an error
 
 apt-get update
 
-sudo debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password password vmdev'
-sudo debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password_again password vmdev'
+sudo debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password password p@ssw0rd'
+sudo debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password_again password p@ssw0rd'
 sudo apt-get update
-sudo apt-get -y install mysql-server-5.5 php5-mysql apache2 php5 vim
+sudo apt-get -y install mysql-server-5.5 php5-mysql apache2 php5 vim git php5-gd
 
-rm -rf /var/www
-ln -s /vagrant/dvwa-1.0.8 /var/www
+dir="/root/DVWA"
+if [[ -e $dir  ]]; then
+    cd "$dir" && git pull --rebase
+else
+    cd "/root/"
+    git clone https://github.com/RandomStorm/DVWA
+fi
 
-mysql -u root -pvmdev < /vagrant/dvwa.sql
+cp -r ~/DVWA/* /var/www
+sudo chmod -R 777 /var/www/hackable/uploads/
+sudo chmod -R 777 /var/www/external/phpids/0.6/lib/IDS/tmp/phpids_log.txt
 
-ln -s /vagrant/z_custom.ini /etc/php5/conf.d/z_custom.ini
+echo "display_errors = On" > /etc/php5/conf.d/z_custom.ini
 
 sudo service apache2 restart
