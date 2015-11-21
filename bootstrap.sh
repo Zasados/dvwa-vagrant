@@ -40,4 +40,7 @@ sudo chmod -R 777 /var/www/external/phpids/0.6/lib/IDS/tmp/phpids_log.txt
 
 echo "display_errors = On" > /etc/php5/conf.d/z_custom.ini
 
+sudo sed -i -e 's/index.html/index.php/1' /etc/apache2/mods-enabled/dir.conf
+sudo sed -i -e 's/index.php/index.html/2' /etc/apache2/mods-enabled/dir.conf
+
 sudo service apache2 restart
