@@ -43,5 +43,5 @@ echo "display_errors = On" > /etc/php5/conf.d/z_custom.ini
 sudo sed -i -e 's/index.html/index.php/1' /etc/apache2/mods-enabled/dir.conf
 sudo sed -i -e 's/index.php/index.html/2' /etc/apache2/mods-enabled/dir.conf
 sudo sed -i -e 's/allow_url_include = Off/allow_url_include = On/g' /etc/php5/apache2/php.ini
-
+sudo cp /var/www/config/config.inc.php.dist /var/www/config/config.inc.php
 sudo service apache2 restart
